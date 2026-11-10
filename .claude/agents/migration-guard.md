@@ -28,13 +28,13 @@ You guard the database schema for OpenNutrition (NestJS + TypeORM + Postgres 17)
 2. If neither exists, reply `No schema changes in this diff.` and stop.
 3. For each changed entity, work out what the schema change is: new table, new or removed column, type change, nullability, default, index, unique constraint, foreign key, or enum. Read the entity in full.
 4. Find the migration that covers it. Read it in full and compare it to the entity change. Check for:
-    - **Missing migration:** entity changed, no migration in the diff.
-    - **Drift:** the migration does not match the entity (wrong column type, missing `NOT NULL`, missing default, missing index or foreign key, different name).
-    - **Unsafe `up()` on existing data:** adding a `NOT NULL` column with no default to a table that may already have rows; dropping a column or table (data loss); narrowing a column type; adding a unique constraint that existing rows may violate. Name the specific risk and suggest a safer sequence (for example add nullable, backfill, then set `NOT NULL`).
-    - **Broken `down()`:** empty, incomplete, or not the exact inverse of `up()`. A `down()` that drops data it cannot restore should be called out, since that is unavoidable for some changes but must be intentional.
-    - **Edited history:** a migration that already exists on the main branch was modified.
-    - **Hand-written SQL problems:** string-built SQL with interpolated values, missing schema-qualified names, or statements that are not idempotent where they need to be.
-    - **Ordering:** the migration timestamp prefix sorts after every existing migration.
+   - **Missing migration:** entity changed, no migration in the diff.
+   - **Drift:** the migration does not match the entity (wrong column type, missing `NOT NULL`, missing default, missing index or foreign key, different name).
+   - **Unsafe `up()` on existing data:** adding a `NOT NULL` column with no default to a table that may already have rows; dropping a column or table (data loss); narrowing a column type; adding a unique constraint that existing rows may violate. Name the specific risk and suggest a safer sequence (for example add nullable, backfill, then set `NOT NULL`).
+   - **Broken `down()`:** empty, incomplete, or not the exact inverse of `up()`. A `down()` that drops data it cannot restore should be called out, since that is unavoidable for some changes but must be intentional.
+   - **Edited history:** a migration that already exists on the main branch was modified.
+   - **Hand-written SQL problems:** string-built SQL with interpolated values, missing schema-qualified names, or statements that are not idempotent where they need to be.
+   - **Ordering:** the migration timestamp prefix sorts after every existing migration.
 5. Check the entity conventions above (suffix, `forFeature` registration, and that nothing touched connection settings outside `buildDatabaseOptions`).
 6. If the database is up, run `npm run migration:show -w backend` and report which migrations are pending.
 
